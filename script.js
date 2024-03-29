@@ -98,42 +98,62 @@ document.getElementById("insuranceClaims").addEventListener("change", function()
     const claimsValue = this.value;
     const claimsDetails = document.getElementById("claimsDetails");
 
-    // Display or hide the number of claims input based on selection
     if (claimsValue === "yes") {
         claimsDetails.style.display = "block";
     } else {
         claimsDetails.style.display = "none";
-        clearClaimsDetails(); // Remove any dynamically added claim amount inputs
+        clearClaimsDetails(); 
     }
 });
 
-
-document.getElementById("insuranceClaims").addEventListener("change", function() {
-    const claimsDetails = document.getElementById("claimsDetails");
-    const numberOfClaimsInput = document.getElementById("numberOfClaims");
+document.getElementById("numberOfClaims").addEventListener("input", function() {
+    const numberOfClaims = parseInt(this.value, 10);
+    const claimsValueInputs = document.getElementById("claimsDetails");
     const numberOfClaimsError = document.getElementById("numberOfClaimsError");
-    
-    // Clear the previous number of claims and error messages
-    numberOfClaimsInput.value = '';
-    numberOfClaimsError.textContent = '';
-    
-    clearClaimsDetails();
 
-    if (this.value === "yes") {
-        claimsDetails.style.display = "block";
-    } else {
-        claimsDetails.style.display = "none";
+    numberOfClaimsError.textContent = '';
+    clearDynamicInputs(); 
+
+   
+    if (numberOfClaims > 4) {
+        numberOfClaimsError.textContent = 'Vous ne pouvez pas avoir plus de 4 réclamations.';
+        return;
+    }
+
+    
+    for (let i = 1; i <= numberOfClaims; i++) {
+        const inputWrapper = document.createElement('div');
+        inputWrapper.className = 'inputWrapper';
+
+        const label = document.createElement('label');
+        label.htmlFor = `claimValue${i}`;
+        label.textContent = `Valeur de la réclamation #${i}:`;
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.id = `claimValue${i}`;
+        input.name = `claimValue${i}`;
+
+        inputWrapper.appendChild(label);
+        inputWrapper.appendChild(input);
+        claimsValueInputs.appendChild(inputWrapper);
     }
 });
+
+
+function clearDynamicInputs() {
+    const inputWrappers = document.querySelectorAll('.inputWrapper');
+    inputWrappers.forEach(wrapper => wrapper.remove());
+}
 
 
 function clearClaimsDetails() {
-    // Remove all child elements after the number of claims input field
-    const claimsDetails = document.getElementById("claimsDetails");
-    while (claimsDetails.children.length > 2) {
-        claimsDetails.removeChild(claimsDetails.lastChild);
-    }
+    document.getElementById("claimsDetails").style.display = "none";
+    document.getElementById("numberOfClaims").value = ''; 
+    clearDynamicInputs(); 
+    document.getElementById("numberOfClaimsError").textContent = '';
 }
+
 
 function calculateInsurance() {
     // Implement your calculation logic here
