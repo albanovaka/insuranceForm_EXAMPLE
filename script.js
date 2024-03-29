@@ -134,12 +134,30 @@ document.getElementById("numberOfClaims").addEventListener("input", function() {
         input.id = `claimValue${i}`;
         input.name = `claimValue${i}`;
 
+        input.addEventListener('input', calculateTotalClaims);
+
         inputWrapper.appendChild(label);
         inputWrapper.appendChild(input);
         claimsValueInputs.appendChild(inputWrapper);
     }
 });
 
+function calculateTotalClaims() {
+    const inputs = document.querySelectorAll('.inputWrapper input[type="number"]');
+    let total = 0;
+
+    inputs.forEach(input => {
+        total += Number(input.value) || 0;
+    });
+
+    const totalError = document.getElementById("numberOfClaimsError");
+    if (total > 35000) {
+        totalError.textContent = 'Le total des réclamations ne peut pas dépasser 35 000$.';
+    } else {
+        // Clear the total error if the total is now under the limit
+        totalError.textContent = totalError.textContent.includes('35 000$') ? '' : totalError.textContent;
+    }
+}
 
 function clearDynamicInputs() {
     const inputWrappers = document.querySelectorAll('.inputWrapper');

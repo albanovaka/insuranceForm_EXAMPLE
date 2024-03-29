@@ -42,13 +42,13 @@
             <select id="insuranceClaims">
                 <option value="no">Non</option>
                 <option value="yes">Oui</option>
+                <div class="error" id="totalError"></div>
             </select>
     
             <div id="claimsDetails" style="display:none;">
                 <label for="numberOfClaims">Combien de réclamations avez-vous faites?</label>
                 <input type="number" id="numberOfClaims">
                 <div class="error" id="numberOfClaimsError"></div>
-                <!-- Dynamic claim amount fields will be added here -->
             </div>
     
             <button type="button" onclick="calculateInsurance()">Calculer l'assurance</button>
