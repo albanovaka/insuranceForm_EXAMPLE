@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Assurance Automobile Simplifiée</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <form id="insuranceForm">
+            <label for="gender">Quel est votre genre?</label>
+            <select id="gender">
+                <option value="male">Homme</option>
+                <option value="female">Femme</option>
+                <option value="non-binary">Non-binaire</option>
+            </select>
+
+            <label for="birthdate">Quel est votre date de naissance?</label>
+                <input type="date" id="birthdate">
+                <div class="error" id="birthdateError"></div>
+            
+            <label for="vehicleValue">Quelle est la valeur d'achat de votre véhicule?</label>
+            <input type="number" id="vehicleValue">
+            <div class="error" id="vehicleValueError"></div>
+    
+            <label for="vehicleYear">Quelle est l'année de fabrication de votre véhicule?</label>
+            <input type="number" id="vehicleYear">
+            <div class="error" id="vehicleYearError"></div>
+    
+            <label for="annualMileage">Combien de kilomètres parcourez-vous par année?</label>
+            <input type="number" id="annualMileage">
+            <div class="error" id="annualMileageError"></div>
+    
+            <label for="hasBackupCamera">Est-ce que votre véhicule possède une caméra de recul?</label>
+            <select id="hasBackupCamera">
+                <option value="yes">Oui</option>
+                <option value="no">Non</option>
+            </select>
+            <div class="warning" id="backupCameraWarning"></div>
+    
+            <label for="insuranceClaims">Avez-vous fait des réclamations d'assurance auto dans les 6 dernières années?</label>
+            <select id="insuranceClaims">
+                <option value="no">Non</option>
+                <option value="yes">Oui</option>
+            </select>
+    
+            <div id="claimsDetails" style="display:none;">
+                <label for="numberOfClaims">Combien de réclamations avez-vous faites?</label>
+                <input type="number" id="numberOfClaims">
+                <div class="error" id="numberOfClaimsError"></div>
+                <!-- Dynamic claim amount fields will be added here -->
+            </div>
+    
+            <button type="button" onclick="calculateInsurance()">Calculer l'assurance</button>
+        </form>
+    </div>
+
+    <div id="result"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

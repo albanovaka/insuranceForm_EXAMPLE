@@ -1,0 +1,39 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    padding: 20px;
+    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+}
+.error{
+    color:pink;
+    padding-top: 2%;
+    font-size: small;
+
+}
+.form-container {
+    border: 1.5px solid #3e1652; 
+    padding: 20px; /* Space between the border and the content */
+    margin: 20px auto; /* Centering the box with automatic horizontal margins */
+    max-width: 600px; /* Maximum width of the form container */
+    background-color:#282c91; 
+    border-radius: 30px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1); /* Soft shadow for depth */
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+}
+
+input, select, button {
+    margin-top: 5px;
+    box-sizing: border-box;
+    font-size: large;
+    border-radius: 15px;
+    border: 2px solid black;
+}
+
+#result {
+    margin-top: 20px;
+    font-weight: bold;
+}
