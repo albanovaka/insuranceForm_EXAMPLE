@@ -36,7 +36,6 @@ function validateVehicleValue() {
     const vehicleValueInput = document.getElementById("vehicleValue");
     const vehicleValueError = document.getElementById("vehicleValueError");
     const vehicleValue = parseInt(vehicleValueInput.value, 10);
-    linkFields('birthdate', 'vehicleValue');
 
     if (vehicleValue > 100000) {
         vehicleValueError.textContent = "La valeur d'achat du véhicule ne doit pas dépasser 100 000$.";
@@ -88,14 +87,19 @@ function validateBackupCamera() {
 
 function attachEventListeners() {
     document.getElementById("birthdate").addEventListener("input", validateBirthdate);
-    linkFields('birthdate', 'vehicleValue', 'birthdateError');
     document.getElementById("vehicleValue").addEventListener("input", validateVehicleValue);
+    linkFields('birthdate', 'vehicleValue', 'birthdateError');
     document.getElementById("vehicleYear").addEventListener("input", validateVehicleYear);
+    linkFields('vehicleValue', 'vehicleYear','vehicleValueError');
     document.getElementById("annualMileage").addEventListener("input", validateAnnualMileage);
+    linkFields('vehicleYear', 'annualMileage', 'vehicleYearError');
     document.getElementById("hasBackupCamera").addEventListener("change", validateBackupCamera);
+    linkFields('annualMileage', 'hasBackupCamera', 'annualMileageError');
+    linkFields('hasBackupCamera', 'insuranceClaims', 'backupCameraWarning'); 
 }
 
 document.addEventListener("DOMContentLoaded", attachEventListeners);
+
 document.getElementById("insuranceClaims").addEventListener("change", function() {
     const claimsValue = this.value;
     const claimsDetails = document.getElementById("claimsDetails");
