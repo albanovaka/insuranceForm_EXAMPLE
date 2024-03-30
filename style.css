@@ -17,13 +17,20 @@ body {
 }
 .form-container {
     border: 1.5px solid #3e1652; 
-    padding: 20px; /* Space between the border and the content */
-    margin: 20px auto; /* Centering the box with automatic horizontal margins */
-    max-width: 600px; /* Maximum width of the form container */
+    padding: 40px; 
+    margin: 20px auto;
+    max-width: 600px;
     background-color:#282c91; 
-    border-radius: 30px; /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 1); /* Soft shadow for depth */
+    border-radius: 30px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1); 
     word-wrap: break-word;
+}
+.top-image {
+    display: block; 
+    margin: 0 auto; 
+    max-width: 40%;
+    height: auto; 
+    border-radius: 200px;
 }
 
 
@@ -38,6 +45,7 @@ input, select, button {
     font-size: large;
     border-radius: 15px;
     border: 2px solid black;
+    margin: 3% 1% 0 0;
 }
 button {
     background-color:#3f5efb;
@@ -51,7 +59,23 @@ button {
     font-weight:bold;
 }
 
-#result {
+button:disabled {
+    background-color:#1f2649;
+    border-radius: 25px;
+    color: rgb(163, 154, 154);
+    padding: 2%; /* Example: Add more padding */
+    border: 2px solid  rgb(163, 154, 154);
+    width: 70%;
+    cursor: default;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight:bold;
+}
+#calculationResult {
     margin-top: 20px;
     font-weight: bold;
+    font-size: x-large;
+    text-align: center;
+    color: #ffb6fd;
+}#claimsDetails{
+    display: none;
 }

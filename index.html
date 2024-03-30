@@ -8,6 +8,7 @@
 <body>
     <div class="form-container">
         <form id="insuranceForm">
+            <img src="assets/carInsurance.png" alt="Descriptive Image Text" class="top-image">
             <label for="gender">Quel est votre genre?</label>
             <select id="gender">
                 <option value="male">Homme</option>
@@ -45,14 +46,14 @@
                 <div class="error" id="totalError"></div>
             </select>
     
-            <div id="claimsDetails" style="display:none;">
+            <div id="claimsDetails">
                 <label for="numberOfClaims">Combien de réclamations avez-vous faites?</label>
                 <input type="number" id="numberOfClaims">
                 <div class="error" id="numberOfClaimsError"></div>
             </div>
     
             <div id="button_calculer">
-                <button type="button" onclick="calculateInsurance()">Calculer l'assurance</button>
+                <button type="button" id="calculateButton" onclick="calculateInsurance()" disabled>Calculer l'assurance</button>
             </div>
             <div id="calculationResult"></div>
         </form>

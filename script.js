@@ -1,14 +1,13 @@
+let totalClaimsValue = 0;
+let amountOfClaims = 0;
+let totalMileage = 0;
+
 function validateBirthdate() {
     const birthdateInput = document.getElementById("birthdate");
     const genderSelect = document.getElementById("gender");
     const birthdateError = document.getElementById("birthdateError");
     const birthdate = new Date(birthdateInput.value);
-    const today = new Date();
-    let age = today.getFullYear() - birthdate.getFullYear();
-    const m = today.getMonth() - birthdate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
-        age--;
-    }
+    let age = calculateAge(birthdate);
 
     const gender = genderSelect.value;
     let ageThreshold;
@@ -64,6 +63,7 @@ function validateAnnualMileage() {
     const annualMileageInput = document.getElementById("annualMileage");
     const annualMileageError = document.getElementById("annualMileageError");
     const annualMileage = parseInt(annualMileageInput.value, 10);
+    totalMileage = annualMileage;
 
     if (annualMileage > 50000) {
         annualMileageError.textContent = "Une personne qui parcourt plus de 50 000 km par année ne peut pas être assurée.";
@@ -80,11 +80,23 @@ function validateBackupCamera() {
 
     if (hasBackupCameraSelect.value === "no") {
         backupCameraWarning.textContent = "Veuillez noter : Un véhicule sans caméra de recul ne peut pas être assuré.";
+        return false;
     } else {
         backupCameraWarning.textContent = "";
+        return true;
     }
 }
 
+function updateCalculateButtonState() {
+    const insuranceClaimsSelect = document.getElementById('insuranceClaims');
+    const calculateButton = document.getElementById('calculateButton');
+
+    if (insuranceClaimsSelect.value === 'yes' || insuranceClaimsSelect.value === 'no') {
+        calculateButton.disabled = false; 
+    } else {
+        calculateButton.disabled = true;
+    }
+}
 function attachEventListeners() {
     document.getElementById("birthdate").addEventListener("input", validateBirthdate);
     document.getElementById("vehicleValue").addEventListener("input", validateVehicleValue);
@@ -95,7 +107,8 @@ function attachEventListeners() {
     linkFields('vehicleYear', 'annualMileage', 'vehicleYearError');
     document.getElementById("hasBackupCamera").addEventListener("change", validateBackupCamera);
     linkFields('annualMileage', 'hasBackupCamera', 'annualMileageError');
-    linkFields('hasBackupCamera', 'insuranceClaims', 'backupCameraWarning'); 
+    document.getElementById('insuranceClaims').addEventListener('change', updateCalculateButtonState);
+    linkFields('hasBackupCamera', 'insuranceClaims','backupCameraWarning');
 }
 
 document.addEventListener("DOMContentLoaded", attachEventListeners);
@@ -116,6 +129,7 @@ document.getElementById("numberOfClaims").addEventListener("input", function() {
     const numberOfClaims = parseInt(this.value, 10);
     const claimsValueInputs = document.getElementById("claimsDetails");
     const numberOfClaimsError = document.getElementById("numberOfClaimsError");
+    amountOfClaims = numberOfClaims;
 
     numberOfClaimsError.textContent = '';
     clearDynamicInputs(); 
@@ -160,8 +174,8 @@ function calculateTotalClaims() {
     if (total > 35000) {
         totalError.textContent = 'Vous ne pouvez pas être assuré si le total des réclamations dépasse $35 000.';
     } else {
-        // Clear the total error if the total is now under the limit
         totalError.textContent = totalError.textContent.includes('35 000$') ? '' : totalError.textContent;
+        totalClaimsValue = total;
     }
 }
 
@@ -187,12 +201,14 @@ function linkFields(previousFieldId, currentFieldId, errorFieldId) {
     function checkFields() {
         const prevFieldValue = previousField.value.trim();
         const errorFieldValue = errorField.textContent.trim();
-  
+        
+
         if (prevFieldValue && !errorFieldValue) {
             currentField.disabled = false;
         } else {
             currentField.disabled = true;
             currentField.value = ''; 
+            
         }
     }
 
@@ -201,6 +217,26 @@ function linkFields(previousFieldId, currentFieldId, errorFieldId) {
  
     previousField.addEventListener('input', checkFields);
 }
+function calculateAge(birthdate) {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+}
+
+function calculatePenalty(){
+    let penalty = 0;
+    if(totalClaimsValue>25000){
+        penalty = 700;
+    }
+    return penalty;
+}
+
 
 function calculateInsurance() {
     const errorElementIds = [
@@ -209,23 +245,52 @@ function calculateInsurance() {
         "vehicleYearError",
         "annualMileageError",
         "numberOfClaimsError",
-        "backupCameraWarning" // Include if a warning should also block the calculation
+        "backupCameraWarning" 
     ];
-    // Check for any existing validation errors
-    const hasErrors = errorElementIds.some(errorElementId => {
+    const genderSelect = document.getElementById("gender");
+    const gender = genderSelect.value;
+    const birthdateInput = document.getElementById("birthdate");
+    let age = calculateAge(birthdateInput.value);
+    let baseValue = 0;
+    const vehicleValueInput = document.getElementById("vehicleValue");
+    const vehicleValue = parseInt(vehicleValueInput.value, 10);
+    let total = 0;
+    let penalty = calculatePenalty();
+
+
+  
+    let hasErrors = errorElementIds.some(errorElementId => {
         const errorElement = document.getElementById(errorElementId);
         return errorElement && errorElement.textContent.trim() !== "";
     });
 
+    const claimsValue = document.getElementById("insuranceClaims").value;
+    if (claimsValue === "yes") {
+        const claimInputs = document.querySelectorAll('.inputWrapper input[type="number"]');
+        const allClaimsFilled = Array.from(claimInputs).every(input => input.value.trim() !== "");
 
-    console.log("Calculating insurance..."); // Placeholder for calculation logic
-
+        if (!allClaimsFilled) {
+            document.getElementById("numberOfClaimsError").textContent = 'Tous les champs de réclamation doivent être remplis.';
+            hasErrors = true; 
+        }
+    }
 
     const calculationResult = document.getElementById("calculationResult");
     if (hasErrors) {
-        calculationResult.textContent = "Vous ne pouvez pas être assuré avec nous, puisque, "+errorElementIds;
-    }
-     else{
-        calculationResult.textContent = "Your calculated insurance premium is: $XYZ"; // Replace XYZ with your calculated value
+        calculationResult.textContent = "Veuillez corriger les erreurs avant de calculer l'assurance.";
+    } else {
+        if((gender == 'male' || gender == 'non-binary') && age <25){
+            baseValue = vehicleValue*0.05;
+        }else if(age>75){
+            baseValue = vehicleValue*0.04;
+        }else{
+            baseValue = vehicleValue*0.015
+        }
+        
+        total = baseValue + (350*amountOfClaims)+(0.02*totalMileage)+penalty;
+        
+
+        calculationResult.textContent = "Le prix annuel de de votre soumission d'assurance est de $"+total;
+    
     }
 }
