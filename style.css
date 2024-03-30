@@ -2,7 +2,12 @@ body {
     font-family: 'Courier New', Courier, monospace;
     color: white;
     padding: 20px;
-    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgb(252, 70, 107) 100%);
+}
+#button_calculer{
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
 }
 .error{
     color:pink;
@@ -20,6 +25,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 1); /* Soft shadow for depth */
 }
 
+
 label {
     display: block;
     margin-top: 20px;
@@ -31,6 +37,17 @@ input, select, button {
     font-size: large;
     border-radius: 15px;
     border: 2px solid black;
+}
+button {
+    background-color:#3f5efb;
+    border-radius: 25px;
+    color: white;
+    padding: 2%; /* Example: Add more padding */
+    cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+    border: 2px solid white;
+    width: 70%;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight:bold;
 }
 
 #result {
