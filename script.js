@@ -36,6 +36,7 @@ function validateVehicleValue() {
     const vehicleValueInput = document.getElementById("vehicleValue");
     const vehicleValueError = document.getElementById("vehicleValueError");
     const vehicleValue = parseInt(vehicleValueInput.value, 10);
+    linkFields('birthdate', 'vehicleValue');
 
     if (vehicleValue > 100000) {
         vehicleValueError.textContent = "La valeur d'achat du véhicule ne doit pas dépasser 100 000$.";
@@ -87,6 +88,7 @@ function validateBackupCamera() {
 
 function attachEventListeners() {
     document.getElementById("birthdate").addEventListener("input", validateBirthdate);
+    linkFields('birthdate', 'vehicleValue', 'birthdateError');
     document.getElementById("vehicleValue").addEventListener("input", validateVehicleValue);
     document.getElementById("vehicleYear").addEventListener("input", validateVehicleYear);
     document.getElementById("annualMileage").addEventListener("input", validateAnnualMileage);
@@ -116,7 +118,7 @@ document.getElementById("numberOfClaims").addEventListener("input", function() {
 
    
     if (numberOfClaims > 4) {
-        numberOfClaimsError.textContent = 'Vous ne pouvez pas avoir plus de 4 réclamations.';
+        numberOfClaimsError.textContent = 'Vous ne pouvez pas être assuré si vous avez plus de 4 réclamations.';
         return;
     }
 
@@ -152,7 +154,7 @@ function calculateTotalClaims() {
 
     const totalError = document.getElementById("numberOfClaimsError");
     if (total > 35000) {
-        totalError.textContent = 'Le total des réclamations ne peut pas dépasser 35 000$.';
+        totalError.textContent = 'Vous ne pouvez pas être assuré si le total des réclamations dépasse $35 000.';
     } else {
         // Clear the total error if the total is now under the limit
         totalError.textContent = totalError.textContent.includes('35 000$') ? '' : totalError.textContent;
@@ -173,10 +175,53 @@ function clearClaimsDetails() {
 }
 
 
-function calculateInsurance() {
-    // Implement your calculation logic here
-    // Ensure you validate inputs and calculate the insurance based on provided criteria
-    // Display results or rejection message in the 'result' section
+function linkFields(previousFieldId, currentFieldId, errorFieldId) {
+    const previousField = document.getElementById(previousFieldId);
+    const currentField = document.getElementById(currentFieldId);
+    const errorField = document.getElementById(errorFieldId);
+  
+    function checkFields() {
+        const prevFieldValue = previousField.value.trim();
+        const errorFieldValue = errorField.textContent.trim();
+  
+        if (prevFieldValue && !errorFieldValue) {
+            currentField.disabled = false;
+        } else {
+            currentField.disabled = true;
+            currentField.value = ''; 
+        }
+    }
+
+    checkFields();
+
+ 
+    previousField.addEventListener('input', checkFields);
 }
 
-// You might want to add more event listeners or functions for input validation and other dynamic behavior as needed
+function calculateInsurance() {
+    const errorElementIds = [
+        "birthdateError",
+        "vehicleValueError",
+        "vehicleYearError",
+        "annualMileageError",
+        "numberOfClaimsError",
+        "backupCameraWarning" // Include if a warning should also block the calculation
+    ];
+    // Check for any existing validation errors
+    const hasErrors = errorElementIds.some(errorElementId => {
+        const errorElement = document.getElementById(errorElementId);
+        return errorElement && errorElement.textContent.trim() !== "";
+    });
+
+
+    console.log("Calculating insurance..."); // Placeholder for calculation logic
+
+
+    const calculationResult = document.getElementById("calculationResult");
+    if (hasErrors) {
+        calculationResult.textContent = "Vous ne pouvez pas être assuré avec nous, puisque, "+errorElementIds;
+    }
+     else{
+        calculationResult.textContent = "Your calculated insurance premium is: $XYZ"; // Replace XYZ with your calculated value
+    }
+}

@@ -23,6 +23,7 @@ body {
     background-color:#282c91; 
     border-radius: 30px; /* Rounded corners */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 1); /* Soft shadow for depth */
+    word-wrap: break-word;
 }
 
 

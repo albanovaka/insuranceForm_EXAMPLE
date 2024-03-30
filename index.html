@@ -20,15 +20,15 @@
                 <div class="error" id="birthdateError"></div>
             
             <label for="vehicleValue">Quelle est la valeur d'achat de votre véhicule?</label>
-            <input type="number" id="vehicleValue">
+            <input type="number" id="vehicleValue" disabled>
             <div class="error" id="vehicleValueError"></div>
     
             <label for="vehicleYear">Quelle est l'année de fabrication de votre véhicule?</label>
-            <input type="number" id="vehicleYear">
+            <input type="number" id="vehicleYear" disabled>
             <div class="error" id="vehicleYearError"></div>
     
             <label for="annualMileage">Combien de kilomètres parcourez-vous par année?</label>
-            <input type="number" id="annualMileage">
+            <input type="number" id="annualMileage" disabled>
             <div class="error" id="annualMileageError"></div>
     
             <label for="hasBackupCamera">Est-ce que votre véhicule possède une caméra de recul?</label>
@@ -54,6 +54,7 @@
             <div id="button_calculer">
                 <button type="button" onclick="calculateInsurance()">Calculer l'assurance</button>
             </div>
+            <div id="calculationResult"></div>
         </form>
     </div>
 
